@@ -1,0 +1,16 @@
+app:
+  name: spring
+
+image:
+  repository: endermaru/22-5-team1-server
+  tag: latest
+
+serviceAccount:
+  name: spring
+
+vault:
+  role: spring-app
+  secretPath: myapp
+  
+secret:
+  name: spring-secret
