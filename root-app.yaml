@@ -1,0 +1,21 @@
+# root-app.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/endermaru/spring-app-gitops
+    targetRevision: main
+    path: apps                 # ⬅️ 여러 Application yaml들이 있는 디렉토리
+    directory:
+      recurse: true            # ⬅️ 모든 하위 Application을 재귀적으로 읽음
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd          # 상위 App만 argocd namespace에 생성
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
