@@ -11,6 +11,12 @@ spec:
     metadata:
       labels:
         app: {{ .Values.app.name }}
+      annotations:
+        vault.hashicorp.com/agent-inject: "true" # Vault Agent Injector를 사용하면, 
+        vault.hashicorp.com/role: {{ .Values.vault.role }} # pod가 뜰 때 Vault 인증을 하고, 주기적으로 토큰을 자동 갱신
+        vault.hashicorp.com/auth-type: "kubernetes"
+        vault.hashicorp.com/agent-inject-token: "true"
+        vault.hashicorp.com/agent-inject-token-ttl: "24h"
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       containers:
