@@ -2,19 +2,19 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: spring-app        # 식별할 이름
-  namespace: argocd       # argo cd가 설치된 namespace
+  namespace: argocd       # app이 위치할 namespace = argocd가 설치된 namespace
 spec:
   project: default
   source:
     repoURL: https://github.com/endermaru/spring-app-gitops 
-    targetRevision: main      # 배포할 브랜치
+    targetRevision: main      # 배포할 기준이 되는 브랜치
     path: helm/spring-app     # Helm Chart 위치
     helm:
       valueFiles:
         - values.yaml         # Helm에 넘길 values 파일
   destination:
-    server: https://kubernetes.default.svc
-    namespace: default        # 애플리케이션이 배포될 네임스페이스
+    server: https://kubernetes.default.svc  
+    namespace: default        # 앱이 배포될 네임스페이스
   syncPolicy:
     automated:
       prune: true             # Git에서 제거된 리소스를 클러스터에서도 삭제

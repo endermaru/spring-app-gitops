@@ -5,12 +5,62 @@ image:
   repository: endermaru/22-5-team1-server
   tag: latest
 
+deployment:
+  replicas: 1
+  revisionHistoryLimit: 1
+
+service:
+  type: LoadBalancer
+  port: 8080
+  targetPort: 8080
+
+config:
+  name: spring-config
+  springProfilesActive: local
+  healthShowDetails: "always"
+
 serviceAccount:
   name: spring
 
+namespace: default
+
 vault:
+  server: "http://vault.default.svc.cluster.local:8200"
+  path: "secret"
+  version: "v2"
+  mountPath: "kubernetes"
   role: spring-app
   secretPath: myapp
   
 secret:
   name: spring-secret
+  refreshInterval: 1h
+
+externalSecret:
+  name: spring-secrets
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+redis:
+  name: redis
+  image:
+    repository: redis
+    tag: 7.0-alpine
+  deployment:
+    replicas: 1
+  service:
+    port: 6379
+    targetPort: 6379
+  resources:
+    limits:
+      cpu: 200m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi

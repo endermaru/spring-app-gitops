@@ -9,12 +9,12 @@ spec:
   source:
     repoURL: https://github.com/endermaru/spring-app-gitops
     targetRevision: main
-    path: apps                 # ⬅️ 여러 Application yaml들이 있는 디렉토리
+    path: apps                 # 여러 Child apps의 yaml들이 있는 디렉토리
     directory:
-      recurse: true            # ⬅️ 모든 하위 Application을 재귀적으로 읽음
+      recurse: false           # apps/ 디렉토리만 읽고 하위 디렉토리는 무시
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd          # 상위 App만 argocd namespace에 생성
+    namespace: argocd          # root-app 자체는 argocd에 생성
   syncPolicy:
     automated:
       prune: true
