@@ -32,6 +32,25 @@ spec:
                 name: {{ .Values.config.name }}
             - secretRef:
                 name: {{ .Values.secret.name }}
+          # Probe 추가
+          startupProbe:
+            httpGet:
+              path: /actuator/health/startup
+              port: 8080
+            initialDelaySeconds: 10
+            failureThreshold: 20
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 20
 ---
 # service
 apiVersion: v1
